@@ -52,7 +52,11 @@ export const App = () => {
               : <Redirect to={createPathForPage(Page.FindUser)} />}
           </Route>
           <Route exact path={createPathForPage(Page.FindUser)}>
-            <FindUser setUsername={setUsername} showError={showError} />
+            <FindUser
+              setUsername={setUsername}
+              showError={showError}
+              showLoader={!initialRender.current && !areDataRetrieved}
+            />
           </Route>
           <Route path="*">
             <Redirect to={createPathForPage(Page.FindUser)} />
