@@ -4,9 +4,18 @@ import {
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import '../../styles/FindUser.css';
+import PropTypes from 'prop-types';
 
-export const FindUser: FC = () => {
+interface IUsernameInputProps {
+    readonly setUsername: (username: string) => void;
+}
+
+export const FindUser: FC<IUsernameInputProps> = ({ setUsername }) => {
   const [usernameInputValue, setUsernameInputValue] = useState('');
+  const propagateUsernameChanges = () => {
+    setUsername(usernameInputValue);
+    setUsernameInputValue('');
+  };
 
   return (
     <div className="find-user">
@@ -24,6 +33,7 @@ export const FindUser: FC = () => {
         value={usernameInputValue}
         placeholder="Github username"
         variant="outlined"
+        onKeyPress={(event) => event.key === 'Enter' && propagateUsernameChanges()}
         onChange={(event) => {
           setUsernameInputValue(event.target.value);
         }}
@@ -32,6 +42,7 @@ export const FindUser: FC = () => {
             <InputAdornment position="end">
               <IconButton
                 aria-label="toggle password visibility"
+                onClick={propagateUsernameChanges}
                 edge="end"
               >
                 <SearchIcon />
@@ -42,4 +53,8 @@ export const FindUser: FC = () => {
       />
     </div>
   );
+};
+
+FindUser.propTypes = {
+  setUsername: PropTypes.func.isRequired,
 };
