@@ -1,0 +1,10 @@
+.header__user {
+    display: flex;
+    font-weight: 500;
+    padding: 12px;
+    font-size: 0.875rem;
+}
+
+.header__user-icon {
+    margin: 0 5px;
+}
