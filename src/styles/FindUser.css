@@ -1,0 +1,12 @@
+.find-user {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.find-user__github-image {
+    width: 30%;
+    height: 30%;
+    padding: 20px;
+}

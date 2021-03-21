@@ -1,7 +1,8 @@
 import React from 'react';
+import { FindUser } from './pages/FindUser';
 
 export const App = () => (
   <div className="App">
-    Github data retriever
+    <FindUser />
   </div>
 );
