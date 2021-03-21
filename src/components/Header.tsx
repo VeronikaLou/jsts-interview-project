@@ -1,6 +1,7 @@
 import {
   AppBar, Tab, Tabs, Typography,
 } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
 import React, { FC } from 'react';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
@@ -70,4 +71,9 @@ export const Header: FC<IHeaderProps> = ({ username, areDataRetrieved }) => {
       )}
     </AppBar>
   );
+};
+
+Header.propTypes = {
+  username: PropTypes.string.isRequired,
+  areDataRetrieved: PropTypes.bool.isRequired,
 };

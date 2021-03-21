@@ -14,16 +14,21 @@ export const App = () => {
   const [username, setUsername] = useState('');
   const [repositories, setRepositories] = useState<IRepository[]>([]);
   const [organizations, setOrganizations] = useState<IOrganization[]>([]);
+  const [areDataRetrieved, setAreDataRetrieved] = useState(false);
+  const [showError, setShowError] = useState(false);
   const initialRender = useRef(true);
 
   useEffect(() => {
     if (!initialRender.current) {
+      setAreDataRetrieved(false);
+      setShowError(false);
       const fetchUserData = async () => {
-        const fetchedData = await getUserReposAndOrganisations(username);
+        const fetchedData = await getUserReposAndOrganisations(username, setShowError);
         if (fetchedData) {
           setOrganizations(fetchedData.orgs);
           setRepositories(fetchedData.repos);
         }
+        setAreDataRetrieved(true);
       };
       fetchUserData();
     } else {
@@ -34,7 +39,7 @@ export const App = () => {
   return (
     <div className="App">
       <Router>
-        <Header areDataRetrieved={areDataRetrieved} username={username} />
+        <Header areDataRetrieved={areDataRetrieved && !showError} username={username} />
         <Switch>
           <Route exact path={createPathForPage(Page.Repositories)}>
             {username
@@ -47,7 +52,7 @@ export const App = () => {
               : <Redirect to={createPathForPage(Page.FindUser)} />}
           </Route>
           <Route exact path={createPathForPage(Page.FindUser)}>
-            <FindUser setUsername={setUsername} />
+            <FindUser setUsername={setUsername} showError={showError} />
           </Route>
           <Route path="*">
             <Redirect to={createPathForPage(Page.FindUser)} />

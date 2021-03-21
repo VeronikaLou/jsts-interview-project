@@ -8,9 +8,10 @@ import PropTypes from 'prop-types';
 
 interface IUsernameInputProps {
     readonly setUsername: (username: string) => void;
+    readonly showError: boolean;
 }
 
-export const FindUser: FC<IUsernameInputProps> = ({ setUsername }) => {
+export const FindUser: FC<IUsernameInputProps> = ({ setUsername, showError }) => {
   const [usernameInputValue, setUsernameInputValue] = useState('');
   const propagateUsernameChanges = () => {
     setUsername(usernameInputValue);
@@ -32,6 +33,8 @@ export const FindUser: FC<IUsernameInputProps> = ({ setUsername }) => {
         id="outlined-username-input"
         value={usernameInputValue}
         placeholder="Github username"
+        error={showError}
+        helperText={showError && 'User doesn\'t exist.'}
         variant="outlined"
         onKeyPress={(event) => event.key === 'Enter' && propagateUsernameChanges()}
         onChange={(event) => {
@@ -57,4 +60,5 @@ export const FindUser: FC<IUsernameInputProps> = ({ setUsername }) => {
 
 FindUser.propTypes = {
   setUsername: PropTypes.func.isRequired,
+  showError: PropTypes.bool.isRequired,
 };
