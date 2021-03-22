@@ -2,13 +2,14 @@
 import axios from 'axios';
 import { IOrganization } from '../components/pages/Organizations';
 import { IRepository } from '../components/pages/Repositories';
+import { DataState } from '../enums/DataState';
 
 // Documentation is at https://developer.github.com/v3/
 const BASE_URL = 'https://api.github.com';
 
 export const getUserReposAndOrganisations = async (
   username: string,
-  setShowError: (showError: boolean) => void,
+  setDataStatus: (status: DataState) => void,
 ): Promise<{orgs: IOrganization[], repos: IRepository[]} | undefined> => {
   try {
     const [orgs, repos] = await axios
@@ -22,7 +23,7 @@ export const getUserReposAndOrganisations = async (
       repos: repos.data,
     });
   } catch (e) {
-    setShowError(true);
+    setDataStatus(DataState.Error);
   }
 
   return undefined;

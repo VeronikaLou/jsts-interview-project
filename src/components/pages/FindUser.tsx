@@ -1,39 +1,46 @@
 import React, { FC, useState } from 'react';
 import {
-  CircularProgress,
-  IconButton, InputAdornment, TextField, Typography,
+  CircularProgress, IconButton, InputAdornment, TextField, Typography,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import '../../styles/FindUser.css';
 import PropTypes from 'prop-types';
+import { DataState } from '../../enums/DataState';
+import { getUsernameInputHelperText, useStylesReddit } from '../../utils/usernameInputDecorators';
 
 interface IUsernameInputProps {
     readonly setUsername: (username: string) => void;
-    readonly showError: boolean;
-    readonly showLoader: boolean;
+    readonly dataState: DataState;
+    readonly username: string;
 }
 
-export const FindUser: FC<IUsernameInputProps> = ({ setUsername, showError, showLoader }) => {
-  const [usernameInputValue, setUsernameInputValue] = useState('');
+export const FindUser: FC<IUsernameInputProps> = ({
+  setUsername, dataState, username,
+}) => {
+  const [usernameInputValue, setUsernameInputValue] = useState(username);
   const propagateUsernameChanges = () => {
     setUsername(usernameInputValue);
-    setUsernameInputValue('');
   };
+
+  const styles = useStylesReddit(username, dataState);
 
   const input = (
     <TextField
-      className="find-user__search"
       id="outlined-username-input"
       value={usernameInputValue}
       placeholder="Github username"
-      error={showError}
-      helperText={showError && 'User doesn\'t exist.'}
       variant="outlined"
+      helperText={getUsernameInputHelperText(username, dataState)}
       onKeyPress={(event) => event.key === 'Enter' && propagateUsernameChanges()}
       onChange={(event) => {
         setUsernameInputValue(event.target.value);
       }}
       InputProps={{
+        classes: {
+          root: styles.root,
+          focused: styles.focused,
+          notchedOutline: styles.notchedOutline,
+        },
         endAdornment: (
           <InputAdornment position="end">
             <IconButton
@@ -59,13 +66,14 @@ export const FindUser: FC<IUsernameInputProps> = ({ setUsername, showError, show
         className="find-user__github-image"
         src="https://logos-world.net/wp-content/uploads/2020/11/GitHub-Logo.png"
       />
-      {showLoader ? <CircularProgress /> : input}
+      {dataState === DataState.Loading ? <CircularProgress /> : input}
     </div>
   );
 };
 
 FindUser.propTypes = {
   setUsername: PropTypes.func.isRequired,
-  showError: PropTypes.bool.isRequired,
-  showLoader: PropTypes.bool.isRequired,
+  // @ts-ignore
+  dataState: PropTypes.oneOf(Object.values(DataState)).isRequired,
+  username: PropTypes.string.isRequired,
 };

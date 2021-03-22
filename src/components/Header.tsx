@@ -8,13 +8,14 @@ import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import { createPathForPage, isPathMatchingAnyPage } from '../utils/routes';
 import { Page } from '../enums/Page';
 import '../styles/Header.css';
+import { DataState } from '../enums/DataState';
 
 interface IHeaderProps {
     readonly username: string,
-    readonly areDataRetrieved: boolean,
+    readonly dataState: DataState,
 }
 
-export const Header: FC<IHeaderProps> = ({ username, areDataRetrieved }) => {
+export const Header: FC<IHeaderProps> = ({ username, dataState }) => {
   const organisationsPath = createPathForPage(Page.Organizations);
   const repositoriesPath = createPathForPage(Page.Repositories);
   const findUserPath = createPathForPage(Page.FindUser);
@@ -51,19 +52,19 @@ export const Header: FC<IHeaderProps> = ({ username, areDataRetrieved }) => {
               component={Link}
               to={repositoriesPath}
               value={repositoriesPath}
-              disabled={!areDataRetrieved}
+              disabled={dataState !== DataState.RetrievedSuccessfully}
             />
             <Tab
               label="Organizations"
               component={Link}
               to={organisationsPath}
               value={organisationsPath}
-              disabled={!areDataRetrieved}
+              disabled={dataState !== DataState.RetrievedSuccessfully}
             />
           </Tabs>
         )}
       />
-      {username && areDataRetrieved && (
+      {username && dataState === DataState.RetrievedSuccessfully && (
       <div className="header__user MuiTab-textColorPrimary">
         <Typography>{username}</Typography>
         <AccountCircleRoundedIcon className="header__user-icon" />
@@ -75,5 +76,6 @@ export const Header: FC<IHeaderProps> = ({ username, areDataRetrieved }) => {
 
 Header.propTypes = {
   username: PropTypes.string.isRequired,
-  areDataRetrieved: PropTypes.bool.isRequired,
+  // @ts-ignore
+  dataState: PropTypes.oneOf(Object.values(DataState)).isRequired,
 };

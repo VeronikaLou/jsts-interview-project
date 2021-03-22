@@ -9,26 +9,25 @@ import { IOrganization, Organizations } from './pages/Organizations';
 import { Header } from './Header';
 import { createPathForPage } from '../utils/routes';
 import { Page } from '../enums/Page';
+import { DataState } from '../enums/DataState';
 
 export const App = () => {
   const [username, setUsername] = useState('');
   const [repositories, setRepositories] = useState<IRepository[]>([]);
   const [organizations, setOrganizations] = useState<IOrganization[]>([]);
-  const [areDataRetrieved, setAreDataRetrieved] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [dataState, setDataState] = useState<DataState>(DataState.Initial);
   const initialRender = useRef(true);
 
   useEffect(() => {
     if (!initialRender.current) {
-      setAreDataRetrieved(false);
-      setShowError(false);
+      setDataState(DataState.Loading);
       const fetchUserData = async () => {
-        const fetchedData = await getUserReposAndOrganisations(username, setShowError);
+        const fetchedData = await getUserReposAndOrganisations(username, setDataState);
         if (fetchedData) {
           setOrganizations(fetchedData.orgs);
           setRepositories(fetchedData.repos);
+          setDataState(DataState.RetrievedSuccessfully);
         }
-        setAreDataRetrieved(true);
       };
       fetchUserData();
     } else {
@@ -39,7 +38,7 @@ export const App = () => {
   return (
     <div className="App">
       <Router>
-        <Header areDataRetrieved={areDataRetrieved && !showError} username={username} />
+        <Header dataState={dataState} username={username} />
         <Switch>
           <Route exact path={createPathForPage(Page.Repositories)}>
             {username
@@ -54,8 +53,8 @@ export const App = () => {
           <Route exact path={createPathForPage(Page.FindUser)}>
             <FindUser
               setUsername={setUsername}
-              showError={showError}
-              showLoader={!initialRender.current && !areDataRetrieved}
+              dataState={dataState}
+              username={username}
             />
           </Route>
           <Route path="*">
