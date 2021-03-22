@@ -1,21 +1,17 @@
 import {
   AppBar, Tab, Tabs, Typography,
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { Link, Route } from 'react-router-dom';
-import React, { FC } from 'react';
+import React, { FC, useContext } from 'react';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import { createPathForPage, isPathMatchingAnyPage } from '../utils/routes';
 import { Page } from '../enums/Page';
 import '../styles/Header.css';
 import { DataState } from '../enums/DataState';
+import { AppContext } from '../context/AppContext';
 
-interface IHeaderProps {
-    readonly username: string,
-    readonly dataState: DataState,
-}
-
-export const Header: FC<IHeaderProps> = ({ username, dataState }) => {
+export const Header: FC = () => {
+  const { username, dataState } = useContext(AppContext);
   const organisationsPath = createPathForPage(Page.Organizations);
   const repositoriesPath = createPathForPage(Page.Repositories);
   const findUserPath = createPathForPage(Page.FindUser);
@@ -72,10 +68,4 @@ export const Header: FC<IHeaderProps> = ({ username, dataState }) => {
       )}
     </AppBar>
   );
-};
-
-Header.propTypes = {
-  username: PropTypes.string.isRequired,
-  // @ts-ignore
-  dataState: PropTypes.oneOf(Object.values(DataState)).isRequired,
 };

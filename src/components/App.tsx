@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   BrowserRouter as Router, Redirect, Route, Switch,
 } from 'react-router-dom';
-import { FindUser } from './pages/FindUser';
+import { FindUser } from './pages/findUser/FindUser';
 import { IRepository, Repositories } from './pages/Repositories';
 import { getUserReposAndOrganisations } from '../utils/github-api';
 import { IOrganization, Organizations } from './pages/Organizations';
@@ -10,6 +10,7 @@ import { Header } from './Header';
 import { createPathForPage } from '../utils/routes';
 import { Page } from '../enums/Page';
 import { DataState } from '../enums/DataState';
+import { AppContext } from '../context/AppContext';
 
 export const App = () => {
   const [username, setUsername] = useState('');
@@ -36,9 +37,9 @@ export const App = () => {
   }, [username]);
 
   return (
-    <div className="App">
+    <AppContext.Provider value={{ dataState, username, setUsername }}>
       <Router>
-        <Header dataState={dataState} username={username} />
+        <Header />
         <Switch>
           <Route exact path={createPathForPage(Page.Repositories)}>
             {username
@@ -51,17 +52,13 @@ export const App = () => {
               : <Redirect to={createPathForPage(Page.FindUser)} />}
           </Route>
           <Route exact path={createPathForPage(Page.FindUser)}>
-            <FindUser
-              setUsername={setUsername}
-              dataState={dataState}
-              username={username}
-            />
+            <FindUser />
           </Route>
           <Route path="*">
             <Redirect to={createPathForPage(Page.FindUser)} />
           </Route>
         </Switch>
       </Router>
-    </div>
+    </AppContext.Provider>
   );
 };
