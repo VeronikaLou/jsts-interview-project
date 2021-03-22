@@ -5,6 +5,7 @@ import React, { FC } from 'react';
 import TelegramIcon from '@material-ui/icons/Telegram';
 import { Alert } from '@material-ui/lab';
 import PropTypes from 'prop-types';
+import { getStyles } from '../../utils/decorators';
 
 export interface IRepository {
     readonly id: number,
@@ -18,35 +19,39 @@ export interface IRepositoriesProps {
     readonly repositories: IRepository[];
 }
 
-export const Repositories: FC<IRepositoriesProps> = ({ repositories }) => (
-  repositories.length === 0
-    ? <Alert severity="info">It seems there are no public repositories for the user.</Alert>
-    : (
-      <TableContainer component={Paper}>
-        <Table aria-label="repositories table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="left">Name</TableCell>
-              <TableCell align="center">Description</TableCell>
-              <TableCell align="center">Visit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {repositories.map((repo) => (
-              <TableRow key={repo.id}>
-                <TableCell component="th" scope="row">{repo.name}</TableCell>
-                <TableCell component="th" align="left">{repo.description}</TableCell>
-                <TableCell component="th" align="center">
-                  <IconButton aria-label="delete" href={repo.html_url} target="_blank">
-                    <TelegramIcon />
-                  </IconButton>
-                </TableCell>
+export const Repositories: FC<IRepositoriesProps> = ({ repositories }) => {
+  const { tableHeaderCell } = getStyles();
+
+  return (
+    repositories.length === 0
+      ? <Alert severity="info">It seems there are no public repositories for the user.</Alert>
+      : (
+        <TableContainer component={Paper}>
+          <Table aria-label="repositories table">
+            <TableHead>
+              <TableRow>
+                <TableCell className={tableHeaderCell} align="left">Name</TableCell>
+                <TableCell className={tableHeaderCell} align="center">Description</TableCell>
+                <TableCell className={tableHeaderCell} align="center">Visit</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    ));
+            </TableHead>
+            <TableBody>
+              {repositories.map((repo) => (
+                <TableRow key={repo.id}>
+                  <TableCell component="th" scope="row">{repo.name}</TableCell>
+                  <TableCell component="th" align="left">{repo.description}</TableCell>
+                  <TableCell component="th" align="center">
+                    <IconButton aria-label="delete" href={repo.html_url} target="_blank">
+                      <TelegramIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ));
+};
 
 Repositories.propTypes = {
   repositories: PropTypes.arrayOf<IRepository>(

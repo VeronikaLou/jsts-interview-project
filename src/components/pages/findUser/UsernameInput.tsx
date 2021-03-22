@@ -1,7 +1,7 @@
 import { IconButton, InputAdornment, TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import React, { useContext, useState } from 'react';
-import { getUsernameInputHelperText, useStylesReddit } from '../../../utils/usernameInputDecorators';
+import { getUsernameInputHelperText, getUsernameInputStyles } from '../../../utils/decorators';
 import { AppContext } from '../../../context/AppContext';
 
 export const UsernameInput = () => {
@@ -11,7 +11,7 @@ export const UsernameInput = () => {
     setUsername(usernameInputValue);
   };
 
-  const styles = useStylesReddit(username, dataState);
+  const { root, focused, notchedOutline } = getUsernameInputStyles(username, dataState);
 
   return (
     <TextField
@@ -26,9 +26,9 @@ export const UsernameInput = () => {
       }}
       InputProps={{
         classes: {
-          root: styles.root,
-          focused: styles.focused,
-          notchedOutline: styles.notchedOutline,
+          root,
+          focused,
+          notchedOutline,
         },
         endAdornment: (
           <InputAdornment position="end">

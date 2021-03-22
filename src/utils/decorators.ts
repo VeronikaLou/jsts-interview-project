@@ -32,7 +32,7 @@ export const getUsernameInputBorderColor = (username: string, dataState: DataSta
   }
 };
 
-export const useStylesReddit = (
+export const getUsernameInputStyles = (
   username: string,
   dataState: DataState,
 ) => {
@@ -55,3 +55,17 @@ export const useStylesReddit = (
     notchedOutline: {},
   }))();
 };
+
+export const getStyles = makeStyles({
+  tableHeaderCell: {
+    fontWeight: 700,
+  },
+  headerTab: {
+    fontWeight: 'bold',
+  },
+  appBar: {
+    flexDirection: 'row',
+    marginBottom: '5px',
+    justifyContent: 'space-between',
+  },
+}, { index: 1 });

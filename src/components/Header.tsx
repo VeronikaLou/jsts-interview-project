@@ -9,41 +9,41 @@ import { Page } from '../enums/Page';
 import '../styles/Header.css';
 import { DataState } from '../enums/DataState';
 import { AppContext } from '../context/AppContext';
+import { getStyles } from '../utils/decorators';
 
 export const Header: FC = () => {
   const { username, dataState } = useContext(AppContext);
   const organisationsPath = createPathForPage(Page.Organizations);
   const repositoriesPath = createPathForPage(Page.Repositories);
   const findUserPath = createPathForPage(Page.FindUser);
+  const { headerTab, appBar } = getStyles();
 
   return (
     <AppBar
-      style={{
-        flexDirection: 'row',
-        marginBottom: '5px',
-        justifyContent: 'space-between',
-      }}
+      className={appBar}
       position="static"
-      color="default"
+      color="primary"
     >
       <Route
         path="/"
         render={(history) => (
           <Tabs
             aria-label="tabs"
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor="secondary"
+            textColor="secondary"
             value={isPathMatchingAnyPage(history.location.pathname)
               ? history.location.pathname
               : false}
           >
             <Tab
+              className={headerTab}
               label="Find user"
               component={Link}
               to={findUserPath}
               value={findUserPath}
             />
             <Tab
+              className={headerTab}
               label="Repositories"
               component={Link}
               to={repositoriesPath}
@@ -51,6 +51,7 @@ export const Header: FC = () => {
               disabled={dataState !== DataState.RetrievedSuccessfully}
             />
             <Tab
+              className={headerTab}
               label="Organizations"
               component={Link}
               to={organisationsPath}

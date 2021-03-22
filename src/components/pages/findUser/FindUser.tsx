@@ -20,7 +20,7 @@ export const FindUser: FC = () => {
         className="find-user__github-image"
         src="https://logos-world.net/wp-content/uploads/2020/11/GitHub-Logo.png"
       />
-      {dataState === DataState.Loading ? <CircularProgress /> : <UsernameInput />}
+      {dataState === DataState.Loading ? <CircularProgress color="secondary" /> : <UsernameInput />}
     </div>
   );
 };
