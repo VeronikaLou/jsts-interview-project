@@ -2,6 +2,15 @@
 
 This is a small project for a JavaScript interview.
 
+Deployed application is available on this [link](https://github-repos-orgs.vercel.app/).
+
+## How to run the application locally
+
+* Install all dependencies - ```npm install``` 
+* If necessary run fix all files with eslint - ```npm run lint``` 
+* Run the application - ```npm start```
+
+
 ## Goal
 
 Create an UI web application that retrieves and displays the user repositories and organisations in Github.
