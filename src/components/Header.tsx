@@ -4,7 +4,6 @@ import {
 import { Link, Route } from 'react-router-dom';
 import React, { FC, useContext } from 'react';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
-import { createPathForPage, isPathMatchingAnyPage } from '../utils/routes';
 import { Page } from '../enums/Page';
 import '../styles/Header.css';
 import { DataState } from '../enums/DataState';
@@ -13,9 +12,6 @@ import { getStyles } from '../utils/decorators';
 
 export const Header: FC = () => {
   const { username, dataState } = useContext(AppContext);
-  const organisationsPath = createPathForPage(Page.Organizations);
-  const repositoriesPath = createPathForPage(Page.Repositories);
-  const findUserPath = createPathForPage(Page.FindUser);
   const { headerTab, appBar } = getStyles();
 
   return (
@@ -31,7 +27,7 @@ export const Header: FC = () => {
             aria-label="tabs"
             indicatorColor="secondary"
             textColor="secondary"
-            value={isPathMatchingAnyPage(history.location.pathname)
+            value={Object.values(Page).includes(history.location.pathname as Page)
               ? history.location.pathname
               : false}
           >
@@ -39,23 +35,23 @@ export const Header: FC = () => {
               className={headerTab}
               label="Find user"
               component={Link}
-              to={findUserPath}
-              value={findUserPath}
+              to={Page.FindUser}
+              value={Page.FindUser}
             />
             <Tab
               className={headerTab}
               label="Repositories"
               component={Link}
-              to={repositoriesPath}
-              value={repositoriesPath}
+              to={Page.Repositories}
+              value={Page.Repositories}
               disabled={dataState !== DataState.RetrievedSuccessfully}
             />
             <Tab
               className={headerTab}
               label="Organizations"
               component={Link}
-              to={organisationsPath}
-              value={organisationsPath}
+              to={Page.Organizations}
+              value={Page.Organizations}
               disabled={dataState !== DataState.RetrievedSuccessfully}
             />
           </Tabs>

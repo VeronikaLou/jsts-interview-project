@@ -1,5 +1,5 @@
 export enum Page {
-    Repositories,
-    Organizations,
-    FindUser,
+    Repositories= '/repositories',
+    Organizations = '/organizations',
+    FindUser= '/find_users',
 }

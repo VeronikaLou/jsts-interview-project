@@ -7,7 +7,6 @@ import { IRepository, Repositories } from './pages/Repositories';
 import { getUserReposAndOrganisations } from '../utils/github-api';
 import { IOrganization, Organizations } from './pages/Organizations';
 import { Header } from './Header';
-import { createPathForPage } from '../utils/routes';
 import { Page } from '../enums/Page';
 import { DataState } from '../enums/DataState';
 import { AppContext } from '../context/AppContext';
@@ -41,21 +40,21 @@ export const App = () => {
       <Router>
         <Header />
         <Switch>
-          <Route exact path={createPathForPage(Page.Repositories)}>
+          <Route exact path={Page.Repositories}>
             {username
               ? <Repositories repositories={repositories} />
-              : <Redirect to={createPathForPage(Page.FindUser)} />}
+              : <Redirect to={Page.FindUser} />}
           </Route>
-          <Route exact path={createPathForPage(Page.Organizations)}>
+          <Route exact path={Page.Organizations}>
             {username
               ? <Organizations organizations={organizations} />
-              : <Redirect to={createPathForPage(Page.FindUser)} />}
+              : <Redirect to={Page.FindUser} />}
           </Route>
-          <Route exact path={createPathForPage(Page.FindUser)}>
+          <Route exact path={Page.FindUser}>
             <FindUser />
           </Route>
           <Route path="*">
-            <Redirect to={createPathForPage(Page.FindUser)} />
+            <Redirect to={Page.FindUser} />
           </Route>
         </Switch>
       </Router>
